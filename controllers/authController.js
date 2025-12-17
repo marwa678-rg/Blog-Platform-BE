@@ -9,9 +9,9 @@ const dotenv = require("dotenv");
 
 //Internal Imports
 const {User} = require("../models/User");
-const { registerSchema, verifySchema, loginSchema, resendOtpSchema } = require("../validation/userVlidation");
-const { sendMail } = require("../utils/sendMail");
-const { generateOtp } = require("../utils/generateOtp");
+const { resendOtpSchema, registerSchema, loginSchema, verifySchema } = require("../validation/userValidation");
+
+
 
 // Global config
 dotenv.config();

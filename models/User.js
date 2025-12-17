@@ -9,7 +9,7 @@ role:{type:String,enum:["user","admin"]},
 
 otp:{type:String,maxLength:6},
 otpExpires:{type:Date},
-isVerify:{type:boolean,default:false},
+isVerify:{type:Boolean,default:false},
 //count of Request of OTP => prevent spam
 otpRequestCount:{type:Number,default:0}
 

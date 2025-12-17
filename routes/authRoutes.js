@@ -5,7 +5,7 @@
 const express=require("express")
 //Internal Imports
 const {register,login,verifyOtp,resendOtp, myInfo}=require("../controllers/authController");
-const { authMiddleware } = require("../middleware/auth.middleware");
+const { authMiddleware } = require("../middlewares/auth.middleware");
 
 const router =express.Router();
 
@@ -23,4 +23,6 @@ router.post("/resend-otp",resendOtp)
 
 //TODO:MY-INFO
 router.get("/myInfo",authMiddleware,myInfo)
+
+
 module.exports = router;
