@@ -6,7 +6,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const dotenv = require("dotenv");
-
+const {generateOtp}= require("../utilies/generateOtp")
+const {sendMail} =require("../utilies/sendEmail")
 //Internal Imports
 const {User} = require("../models/User");
 const { resendOtpSchema, registerSchema, loginSchema, verifySchema } = require("../validation/userValidation");
@@ -29,7 +30,7 @@ async function register(request, response) {
     }
 
     // extract data
-    const { email, password } = value;
+    const { email, password,name } = value;
 
     // check if user exists
     const userExist = await User.findOne({ email });
@@ -45,6 +46,7 @@ async function register(request, response) {
 
     // create user
     const user = await User.create({
+      name,
       email,
       password: hashPass,
       otp,
@@ -101,7 +103,12 @@ if(!user.isVerify){
   process.env.JWT_SECRET,
   {expiresIn:process.env.JWT_EXPIRES_IN}
 );
- response.json({message:"Loggedin Successfully",token,})
+ response.json({message:"Loggedin Successfully",token,user:{
+  id:user._id,
+  role:user.role,
+  email:user.email,
+  name:user.name,
+ }})
 
 
  } catch (error) {
@@ -190,7 +197,8 @@ response.json({message:"Otp Sent Successfully",count:user.otpRequestCount,})
 async function myInfo(request,response){
 try {
   const id= request.user._id 
-  const user=await User.findById({id})
+  const user=await User.findById(id).select("-password -otp -otpExpires");
+  response.json(user);
 if(!user){
  return  response.status(400).json({message:"UserNot Found"})
 }

@@ -2,7 +2,6 @@
 
 //Imports
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
 const dotenv = require("dotenv")
   //Global Config
   dotenv.config();
@@ -14,12 +13,12 @@ const dotenv = require("dotenv")
     //validate Headers
     const auth= request.headers["authorization"];
     if(!auth){
-      return response.status(401).json({message:"Un authorized"})
+      return response.status(401).json({message:"Unauthorized"})
     }
     //validate token 
     const token= auth.split(" ")[1];
     if(!token){
-      return response.status(401).json({message:"Un Athorized"})
+      return response.status(401).json({message:"Unauthorized"})
     }
     //verify token
     const payload = jwt.verify(token , process.env.JWT_SECRET)
@@ -31,7 +30,7 @@ const dotenv = require("dotenv")
 
   } catch (error) {
     console.log(error)
-    response.status(401).json({message:"Unathorized"})
+    response.status(401).json({message:"Unauthorized"})
   }
 }
 

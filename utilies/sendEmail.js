@@ -11,7 +11,7 @@ dotenv.config();
 
 const transporter = nodemailer.createTransport({
   host:process.env.EMAIL_HOST_PROVIDER,
-  port: process.env.STMP_PORT,
+  port: process.env.SMTP_PORT,
   auth:{
     user:process.env.EMAIL_USER,
     pass:process.env.EMAIL_PASS,
@@ -25,7 +25,7 @@ async function sendMail(to,subject,text){
       from:process.env.EMAIL_USER,
       to,
       subject,
-      test,
+      text,
     });
   } catch (error) {
     console.log(error)

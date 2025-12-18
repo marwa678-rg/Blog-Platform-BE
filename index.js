@@ -6,7 +6,9 @@ const { default: rateLimit }=require("express-rate-limit")
 
 //Internal Imports
 const { connectToDatabase } = require("./config/db.config");
-const authRoutes = require("./routes/authRoutes")
+const authRoutes = require("./routes/authRoutes");
+const usersRoutes = require("./routes/usersRoutes");
+const path=require("path")
 //Global Configs
 dotenv.config();
 
@@ -14,13 +16,21 @@ dotenv.config();
 
 //APP
 const app= express();
-const PORT= process.env.Port || 3000;
+const PORT= process.env.PORT || 3000;
+
+
+//Serve Static files
+app.use(express.static(path.join(__dirname,"public")))//SERVER => access default
+app.use(express.static(path.join(__dirname,"uploads")))//user front access profilePic
+
+
 //Global Middlewares
-app.use(express.json);
+app.use(express.json());
 app.use(cors({
   origin:JSON.parse(process.env.PRODUCTION_ENV)?
   process.env.CLIENT_ORIGIN : "*",
 }));
+
 
 //npm i express-rate-limit
 //rate Limit
@@ -35,7 +45,7 @@ app.use(limiter);
 
 
 //Main Routes
-app.get("/", (request,response)=>{
+app.get("/",(request,response)=>{
   response.send("Welcome To Our Backend .")
 });
 
@@ -43,6 +53,7 @@ app.get("/", (request,response)=>{
 
 //API Routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/users",usersRoutes)
 
 //Connect To DB
 connectToDatabase();
