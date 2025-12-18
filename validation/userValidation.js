@@ -24,10 +24,18 @@ const loginSchema=Joi.object({
 const resendOtpSchema=Joi.object({
   email:Joi.string().email().required(),
 })
+
+//_____________ profile Info Schemas_______//
+
+const updateProfileSchema =Joi.object({
+  name:Joi.string().min(3).optional(),
+  bio:Joi.string().optional(),
+})
  
 module.exports={
   registerSchema,
   verifySchema,
   loginSchema,
   resendOtpSchema,
+  updateProfileSchema,
 }

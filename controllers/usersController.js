@@ -3,6 +3,7 @@
 
 //Internal Imports
 const { User } = require("../models/User");
+const { updateProfileSchema } = require("../validation/userValidation");
 
 
 
@@ -36,6 +37,27 @@ response.json({message:"profile picture uploaded",profilePic:user.profilePic})
 }
 }
 
+//TODO:updateProfile Data
+async function updateProfileData(request,response){
+  try {
+    //validation on profile Info
+    const {error,value} =updateProfileSchema.validate(request.body,{abortEarly:false})
+    if(error){
+      return response.status(400).json({message:error.details.map(e=>e.message)})
+    }
+    //Extract data
+ const userId= request.user.id;   
+const{bio,name}= value;
+
+const user = await User.findByIdAndUpdate(userId,{bio,name},{new:true}).select("-password");
+//return user front=> slice
+response.json({message:"Profile Updated successfully",user});
+
+  } catch (error) {
+     console.log(error);
+  response.status(500).json({message:"Internal Server Error"})
+  }
+}
 
 
 
@@ -51,4 +73,5 @@ response.json({message:"profile picture uploaded",profilePic:user.profilePic})
 
 
 
-module.exports={uploadProfilePic};
+
+module.exports={uploadProfilePic,updateProfileData};
