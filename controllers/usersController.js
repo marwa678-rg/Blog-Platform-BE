@@ -2,6 +2,7 @@
 //Imports
 
 //Internal Imports
+const { Post } = require("../models/Post");
 const { User } = require("../models/User");
 const { updateProfileSchema } = require("../validation/userValidation");
 
@@ -60,6 +61,18 @@ response.json({message:"Profile Updated successfully",user});
 }
 
 
+//ToDo:Get User Posts
+async function getUserPosts(request,response){
+  try {
+    const userId= request.params.id;
+    const posts = (await Post.find({userId})).Sort({createdAt:-1});
+
+    response.json({posts})
+  } catch (error) {
+         console.log(error);
+  response.status(500).json({message:"Internal Server Error"})
+  }
+}
 
 
 
@@ -73,5 +86,4 @@ response.json({message:"Profile Updated successfully",user});
 
 
 
-
-module.exports={uploadProfilePic,updateProfileData};
+module.exports={uploadProfilePic,updateProfileData,getUserPosts};

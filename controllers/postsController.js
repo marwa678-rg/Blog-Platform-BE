@@ -84,6 +84,21 @@ response.json({post,likes:post.likes.length})
   }
 }
 
+//Todo: Delete post
+async function deletePost(request,response){
+  try {
+    const postId = request.params.id;
+    const post = await Post.findById(postId);
+    if(!post){
+      return response.status(404).json({message:"Post Not Found"})
+    }
+await post.deleteOne();
+response.json({message:"Post Removed Successfully"})
+  } catch (error) {
+       console.log(error)
+    response.status(500).json({message:"Internal Server Error"})
+  }
+}
 
 
 
@@ -91,5 +106,4 @@ response.json({post,likes:post.likes.length})
 
 
 
-
-module.exports={createPost,getAllPosts,updatePost}
+module.exports={createPost,getAllPosts,updatePost,deletePost}

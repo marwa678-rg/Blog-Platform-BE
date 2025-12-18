@@ -2,7 +2,8 @@
 const express=require("express");
 const { authMiddleware } = require("../middlewares/auth.middleware");
 const { upload } = require("../utilies/uploads");
-const { createPost, getAllPosts,updatePost} = require("../controllers/postsController");
+const { createPost, getAllPosts,updatePost, deletePost} = require("../controllers/postsController");
+const { roleMiddleware } = require("../middlewares/role.middleware");
 
 
 const router = express.Router();
@@ -13,7 +14,8 @@ router.post("/create",authMiddleware,upload.array("images",5),createPost)
 router.get("/getposts",getAllPosts)
 //Update post=>
 router.put("/:id/like",authMiddleware,updatePost)
-
+//delete post 
+router.delete("/:id",authMiddleware,roleMiddleware("admin"),deletePost)
 
 
 

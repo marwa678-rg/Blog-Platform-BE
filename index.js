@@ -8,7 +8,8 @@ const { default: rateLimit }=require("express-rate-limit")
 const { connectToDatabase } = require("./config/db.config");
 const authRoutes = require("./routes/authRoutes");
 const usersRoutes = require("./routes/usersRoutes");
-const postsRoutes = require("./routes/postsRoutes")
+const postsRoutes = require("./routes/postsRoutes");
+const commentRoutes=require("./routes/commentRoutes");
 const path=require("path")
 //Global Configs
 dotenv.config();
@@ -56,6 +57,7 @@ app.get("/",(request,response)=>{
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users",usersRoutes);
 app.use("/api/v1/posts",postsRoutes);
+app.use("/api/v1/comments",commentRoutes)
 //Connect To DB
 connectToDatabase();
 
